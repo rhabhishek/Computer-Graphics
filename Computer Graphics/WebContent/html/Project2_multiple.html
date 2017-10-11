@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html> 
+<head>
+ <script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 vPosition;
+attribute vec4 vColor;
+varying vec4 fColor;
+uniform mat4 modelViewMatrix;
+uniform float x;
+uniform float y;
+uniform float z;
+uniform float zoom;
+vec4 translation = vec4(x,y,z,zoom);
+void main()
+{
+fColor = vColor;
+gl_Position = translation + modelViewMatrix * vPosition;
+}
+
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+varying vec4 fColor;
+void main()
+{
+gl_FragColor = fColor;
+}
+</script>
+	<script type="text/javascript" src="../js/common/webgl-utils.js"></script>
+	<script type="text/javascript" src="../js/common/initShaders.js"></script>
+	<script type="text/javascript" src="../js/common/MV.js"></script>
+	<script type="text/javascript" src="../js/Project2_multiple.js"></script>
+	<title>Project 2 - Rotating Cubes @ CPU</title>
+</head>
+
+<body>
+<h3>Rotating Cubes @ CPU</h3>
+<script>
+var elapsedTime = 0;
+var frameCount = 0;
+var lastTime = 0;
+
+function drawScene() {
+
+   // draw scene here
+
+   var now = new Date().getTime();
+
+   frameCount++;
+   elapsedTime += (now - lastTime);
+
+   lastTime = now;
+
+   if(elapsedTime >= 1000) {
+       fps = frameCount;
+       frameCount = 0;
+       elapsedTime -= 1000;
+
+       document.getElementById('test').innerHTML = fps;
+   }
+}
+
+lastTime = new Date().getTime();
+setInterval(drawScene,33);
+
+</script>
+
+Frame Rate :<span id="test"></span> fps
+
+
+<canvas id="gl-canvas" width="512" height="512">
+	Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+<br/>
+<input type="range" min="-1" max="1" step="0.1" value="0.0" onchange="javascript:{x=this.value;}" />X-Axis<br/>
+<input type="range" min="-1" max="1" step="0.1" value="0.0" onchange="javascript:{y=this.value;}" />Y-Axis<br/>
+<input type="range" min="-50" max="50" step="1" value="4.0" onchange="javascript:{zoom=this.value;}" />Zoom<br/> 
+
+</body>
+
+</html>
+
+
